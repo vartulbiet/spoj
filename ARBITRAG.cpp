@@ -30,47 +30,37 @@ typedef long long ll;
 typedef unsigned long long ull;
 typedef vector<int> vi;
 typedef pair<int, int> ii;
-void floyd_warshall(vector< vector<double> > vec)
+
+bool floyd_warshall(vector< vector<double> > vec)
 {
-	bool bt = true;
 	for(int i=0;i<vec.size();i++)
 	{
 		for(int j =0;j<vec.size();j++)
 		{
 			for(int k =0;k<vec.size();k++)
 			{
-				if(vec[j][k] == 0)
-					vec[j][k] = (vec[j][i]*vec[i][k]);
-				else if(vec[j][k] != (vec[j][i]*vec[i][k]))
-				{
-					bt = false;
-					cout<<j<<" "<<k<<" "<<vec[j][k]<<" "<< (vec[j][i]*vec[i][k])<<endl;
-				}
+				vec[j][k] = max(vec[j][k],vec[j][i]*vec[i][k]);
 			}
 		}
 	}
-	for(int i=0;i<vec.size();i++)
-	{
-		for(int j =0;j<vec.size();j++)
+	        		
+		for(int i  = 0 ; i < vec.size(); i++)
 		{
-			cout<<vec[i][j]<<" ";
+				if(vec[i][i] > 1.0)
+					return false;
 		}
-		cout<<endl;
-	}
-	if(bt)
-	cout<<"No"<<endl;
-	else
-	cout<<"Yes"<<endl;
+		return true;
 }
 int main()
 {
 	int n =0;
 	cin>>n;
+	int test = 1;
 	while(n!=0)
 	{
 		map<string,int>mymap;
 		int j =0;
-		while(n--)
+		for(int i =0 ;i < n ; i++)
 		{
 			string d;
 			cin>>d;
@@ -80,30 +70,30 @@ int main()
 		cin>>m;
 		
 		vector<vector<double> >graph;
-		for(int i =0;i<mymap.size();i++)
+
+		for(int i  = 0 ; i < n; i++)
 		{
 			vector<double>temp;
-			for(int j =0;j<mymap.size();j++)
-			temp.PB(0.00);
+			for(int j  = 0 ; j < n; j++)
+				temp.PB(0.0);
 			graph.PB(temp);
 		}
-		for(int i =0;i<graph.size();i++)
+		for(int i =0 ; i< m ;i++)
 		{
-			for(int j =0;j<graph[i].size();j++)
-			graph[i][j] =0.00;
-			graph[i][i] = 1.00;
-		}
-		for(int i =0;i<m;i++)
-		{
-			string a;
+			string a,c;
 			double b;
-			string c;
 			cin>>a>>b>>c;
-			graph[mymap[a]][mymap[c]] = b*100000;
-			graph[mymap[c]][mymap[a]] = 100000.00/(double)b;		
+			graph[mymap[a]][mymap[c]] = b;
 		}
-		floyd_warshall(graph);
+		bool uu = floyd_warshall(graph);
+
+
+		  if(!uu)
+            cout<<"Case "<<test<<": Yes\n";
+        else
+            cout<<"Case "<<test<<": No\n";
 		cin>>n;
+		test++;
 	}
 	return 0;
 }
