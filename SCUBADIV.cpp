@@ -50,12 +50,20 @@ void KNAPSACK(vector<node>&vec, int n)
 		}
 		matrix.PB(temp);
 	}
+	for(int i = 1; i< n+1 ;i++)
+		matrix[i][0] = vec[i-1];
 	int min_weight =0;
 	for(int i = 1 ;i < n+1 ;i++)
 	{
+		struct node val = vec[i-1];
 		for(int j = 1 ; j < n+1 ; j++)
 		{
-			matrix[i][j]
+			if(matrix[i][j].o < val.o || matrix[i][j].n < val.n)
+			{
+				matrix[i][j].o +=val.o;
+				matrix[i][j].n +=val.n;
+				matrix[i][j].w +=val.w;
+			}
 		}
 	}
 }
